@@ -90,12 +90,12 @@ vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight, int* 
 	return M;
 }
 
-int main(){
+int main(int argc, char *argv[]){
 	clock_t time_req;
 	int output1, output2, output3;
        	float output4;
 	//reading in market file
-	fstream marketfile("market_price.txt");
+	fstream marketfile(argv[2]);
 	int line_num = 0;	//line being read in market_price.txt
 	int cards;		//amount of cards in market_price.txt
 	string myText;
@@ -124,7 +124,7 @@ int main(){
 	for(int i=0 ; i<market.size(); i++){
 		market.at(i).printCard();
 	}
-	fstream gertrude("price_list.txt");
+	fstream gertrude(argv[4]);
 	ofstream output;
 	output.open("output.txt");
 	string g_text;
