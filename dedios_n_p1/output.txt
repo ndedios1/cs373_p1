@@ -1,1 +1,4 @@
-3	1100	2	0.00242
+Size of input	Max profit	Num of cards	Time
+2		3050		2		0.001797
+3		1100		2		0.00184
+4		2000848		3		0.00189

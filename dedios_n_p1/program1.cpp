@@ -21,6 +21,7 @@ int findMPrice(string name, vector<Card> m){
 
 	}
 	cout << "Error: card does not exist in the market \n";
+	exit(0);
 	return 0; 
 }	
 
@@ -38,29 +39,29 @@ vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight, int* 
 		int iprofit =0;
 		for(int k =0; k < g.size(); k++){
 			iprofit += findMPrice(g.at(k).getName(), m) - g.at(k).getPrice();	
-		cout << "Gertrude's Price: " << g.at(k).getPrice() << "\n" ;
+		//cout << "Gertrude's Price: " << g.at(k).getPrice() << "\n" ;
 		M.push_back(g.at(k));
 		}
 		iprofit+= weight;
 		maxProfit = iprofit;
 		*p = maxProfit;
-		cout << "This is the total profit: " << iprofit << "\n";
+		//cout << "This is the total profit: " << iprofit << "\n";
 		return M;
 	}
 	//checks each subset to see if there is a bigger maxProfit
-	int temp;
+	int bit;
 	int i=0;
 	while(i < pow(2, g.size())){
 		//creates the subset
-		cout << "New Subset: \n";
+		//cout << "New Subset: \n";
 		S.clear();
 		for(int j=0; j<g.size(); j++){
-			temp = i;
-			temp >>= j;
-			temp &=1;
-			if(temp ==1){
+			bit = i;
+			bit >>= j;
+			bit &=1;
+			if(bit ==1){
 				S.push_back(g.at(j));
-				g.at(j).printCard();
+				//g.at(j).printCard();
 			}
 		}
 		//checks if cost is greater than allowance
@@ -77,7 +78,7 @@ vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight, int* 
 			}
 			//if profit is bigger than max, switch
 			if(subset_profit > maxProfit){
-				cout << "found bigger profit\n";
+				//cout << "found bigger profit\n";
 				maxProfit = subset_profit;
 				*p = maxProfit;
 				M = S;
@@ -91,12 +92,14 @@ vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight, int* 
 
 int main(){
 	clock_t time_req;
-	time_req = clock();
-	int output1, output2, output3, output4;
+	int output1, output2, output3;
+       	float output4;
+	//reading in market file
 	fstream marketfile("market_price.txt");
 	int line_num = 0;	//line being read in market_price.txt
 	int cards;		//amount of cards in market_price.txt
 	string myText;
+	//creates market vector
 	vector<Card> market;
 	//Adds cards to the market
 	if(marketfile.is_open()){
@@ -115,55 +118,70 @@ int main(){
 		}
 		marketfile.close();
 	}
-	//create_market("market_price.txt", market);
+	
 	cout << "The amount of cards in Market: " << market.size() << "\n";
+	//prints the market cards
 	for(int i=0 ; i<market.size(); i++){
-		cout << market.at(i).getName() << "\n";
+		market.at(i).printCard();
 	}
 	fstream gertrude("price_list.txt");
-	string g_text;
-	int g_cards_num;
-	vector<Card> gcards;
-	int allowance;
-	if(gertrude.is_open()){
-		getline(gertrude, g_text, ' ');
-		g_cards_num = stoi(g_text);
-		cout << "number of Gertrude's cards: " << g_cards_num << "\n";
-		getline(gertrude, g_text);
-		allowance = stoi(g_text);
-		cout << "allowance: $" << allowance << "\n";
-		int index = g_cards_num;
-		//getline(gertrude, g_text);
-		string g_name;
-		int g_price;
-		while(index !=0){
-			getline(gertrude, g_text, ' ');
-			g_name = g_text;
-			getline(gertrude, g_text);
-			g_price = stoi(g_text);
-			//cout << "name: " << g_name << "\n";
-			//cout << "price: " << g_price << "\n";
-			Card g = Card(g_name, g_price);
-			gcards.push_back(g);
-			g.printCard();
-			index--;
-		}
-
-	}
-
-	gertrude.close();	
-	int mProfit=0;
-	vector<Card> ret_vec = computeMaxProfit(gcards, market, allowance, &mProfit);
-	cout << "mProfit: " << mProfit << "\n";
-	output3 = ret_vec.size();
-	//writes to the output.txt file
 	ofstream output;
-	output1 = g_cards_num;
 	output.open("output.txt");
-	
-	if(output.is_open()){
-		output << output1 << '\t' << mProfit << '\t' << output3 << '\t' << (float)time_req/CLOCKS_PER_SEC << '\n';
+	string g_text;
+	int big_index = -1;
+	vector<Card> gcards;
+	output << "Size of input\t" << "Max profit\t" << "Num of cards\t" << "Time\n";
+	while(!gertrude.eof()){
+		time_req = clock();
+		int g_cards_num = 0;
+		int allowance = 0;
+		if(big_index = -1){
+			if(getline(gertrude, g_text, ' ')){
+				g_cards_num = stoi(g_text);
+				cout << "\n Number of Gertrude's cards: " << g_cards_num << "\n";
+				getline(gertrude, g_text);
+				allowance = stoi(g_text);
+				cout << "Allowance: $" << allowance << "\n";
+			}
+			big_index++;
+		}
+		
+			string g_name;
+			int g_price;
+			int index = g_cards_num;
+			while(index != 0){
+				getline(gertrude, g_text, ' ');
+				g_name = g_text;
+				getline(gertrude,g_text);
+				g_price = stoi(g_text);
+				Card g = Card(g_name, g_price);
+				gcards.push_back(g);
+				//g.printCard();
+				index--;	
+			}
+			int mProfit = 0;
+			vector<Card> ret_vec = computeMaxProfit(gcards, market, allowance, &mProfit);
+			if(ret_vec.size() != 0){	
+				cout << "\nMax Profit: " << mProfit << "\n";
+				cout << "Cards that profit the most: \n";
+				for(int s=0; s< ret_vec.size(); s++){
+					ret_vec.at(s).printCard();
+				}
+			}
+			//writes to the output.txt file
+			output1 = g_cards_num;
+			output2 = mProfit;
+			output3 = ret_vec.size();
+			output4 = (float)time_req/CLOCKS_PER_SEC;
+			if(output.is_open() && output1 != 0){
+				output << output1 << "\t\t" << output2 << "\t\t" << output3 << "\t\t" << output4 << "\n";
+			}
+			gcards.clear();
+			big_index = -1;
+
+
 	}
+	gertrude.close();
 	output.close();
 	return 0;
 }
