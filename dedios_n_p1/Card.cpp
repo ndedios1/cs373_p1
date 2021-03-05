@@ -32,3 +32,9 @@ int Card::getPrice(){
 void Card::printCard(){
 	cout << "Name: " << name << " Price: " << price << "\n";
 }
+
+string Card::out(){
+	string price_string = to_string(price);
+	string ret_string = "Name: " + name + "\t" + "Price: " + price_string;
+	return ret_string;
+}

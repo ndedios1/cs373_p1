@@ -18,6 +18,7 @@ class Card{
 		string getName();
 		int getPrice();
 		void printCard();
+		string out();
 	private:
 		string name;
 		int price;

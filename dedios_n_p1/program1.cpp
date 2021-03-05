@@ -39,10 +39,10 @@ vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight, int* 
 		int iprofit =0;
 		for(int k =0; k < g.size(); k++){
 			iprofit += findMPrice(g.at(k).getName(), m) - g.at(k).getPrice();	
-		//cout << "Gertrude's Price: " << g.at(k).getPrice() << "\n" ;
+		//cout << "Gertrude's Price: " <i< g.at(k).getPrice() << "\n" ;
 		M.push_back(g.at(k));
 		}
-		iprofit+= weight;
+		//iprofit+= weight;
 		maxProfit = iprofit;
 		*p = maxProfit;
 		//cout << "This is the total profit: " << iprofit << "\n";
@@ -130,7 +130,7 @@ int main(){
 	string g_text;
 	int big_index = -1;
 	vector<Card> gcards;
-	output << "Size of input\t" << "Max profit\t" << "Num of cards\t" << "Time\n";
+	output << "Size of input\t" << "Max profit\t" << "Num of cards\t" << "Time (s)\n";
 	while(!gertrude.eof()){
 		time_req = clock();
 		int g_cards_num = 0;
@@ -175,6 +175,9 @@ int main(){
 			output4 = (float)time_req/CLOCKS_PER_SEC;
 			if(output.is_open() && output1 != 0){
 				output << output1 << "\t\t" << output2 << "\t\t" << output3 << "\t\t" << output4 << "\n";
+				for(int r = 0; r < output3; r++){
+					output << ret_vec.at(r).out() << "\n";
+				}
 			}
 			gcards.clear();
 			big_index = -1;

@@ -1,4 +1,11 @@
-Size of input	Max profit	Num of cards	Time
-2		3050		2		0.001797
-3		1100		2		0.00184
-4		2000848		3		0.00189
+Size of input	Max profit	Num of cards	Time (s)
+2		2750		2		0.004023
+Name: JimRice1975	Price: 100
+Name: RickyHenderson1983	Price: 150
+3		1100		2		0.004191
+Name: DerekJeter1996	Price: 120
+Name: JimRice1975	Price: 80
+4		2000848		3		0.004297
+Name: JimRice1975	Price: 100
+Name: HonusWagner1933	Price: 202
+Name: DerekJeter1996	Price: 150
