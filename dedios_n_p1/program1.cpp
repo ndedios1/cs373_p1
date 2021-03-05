@@ -5,6 +5,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <ctime>
 #include "Card.h"
 
 using namespace std;
@@ -43,12 +44,19 @@ vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight, int* 
 		cout << "This is the total profit: " << iprofit << "\n";
 		return M;
 	}
+	bool done = false;
+	while(!done){
+		done = true;
+	}
+
 	cout << sum << "\n";
 	cout << "finished\n";
 	return M;
 }
 
 int main(){
+	clock_t time_req;
+	time_req = clock();
 	int output1, output2, output3, output4;
 	fstream marketfile("market_price.txt");
 	int line_num = 0;	//line being read in market_price.txt
@@ -111,15 +119,16 @@ int main(){
 
 	gertrude.close();	
 	int mProfit=0;
-	computeMaxProfit(gcards, market, allowance, &mProfit);
+	vector<Card> ret_vec = computeMaxProfit(gcards, market, allowance, &mProfit);
 	cout << "mProfit: " << mProfit << "\n";
-
+	output3 = ret_vec.size();
 	//writes to the output.txt file
 	ofstream output;
 	output1 = g_cards_num;
 	output.open("output.txt");
+	
 	if(output.is_open()){
-		output << output1;
+		output << output1 << '\t' << mProfit << '\t' << output3 << '\t' << (float)time_req/CLOCKS_PER_SEC << '\n';
 	}
 	output.close();
 	return 0;
