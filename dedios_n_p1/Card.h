@@ -14,16 +14,13 @@ using namespace std;
 class Card{
 	public:
 		Card();
-		Card(string name, int price, int mprice);
-		Card(string name, int  market_price);
+		Card(string name, int mprice);
 		string getName();
 		int getPrice();
-		int getMarketPrice();
 		void printCard();
 	private:
 		string name;
 		int price;
-		int mprice;
 };
 #endif
 
