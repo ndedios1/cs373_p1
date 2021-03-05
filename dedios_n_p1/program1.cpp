@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <ctime>
+#include <cmath>
 #include "Card.h"
 
 using namespace std;
@@ -13,8 +14,8 @@ using namespace std;
 int findMPrice(string name, vector<Card> m){
 	for(int i = 0; i < m.size(); i++){
 		if(m.at(i).getName() == name){
-			cout << "Found " << name << "\n";
-			cout << "Price: " << m.at(i).getPrice() << "\n";
+			//cout << "Found " << name << "\n";
+			//cout << "Price: " << m.at(i).getPrice() << "\n";
 			return m.at(i).getPrice();
 		}
 
@@ -27,10 +28,12 @@ vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight, int* 
 	int maxProfit = 0;
 	vector<Card> S;
 	vector<Card> M;
+	//finds the sum of Gertrude's cards
 	int sum;
 	for(int j=0; j < g.size(); j++){
 		sum += g.at(j).getPrice();
-	}
+	}	
+	//If allowance is more than the cost, all cards are purchased and makes profit
 	if(sum <= weight){
 		int iprofit =0;
 		for(int k =0; k < g.size(); k++){
@@ -44,13 +47,45 @@ vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight, int* 
 		cout << "This is the total profit: " << iprofit << "\n";
 		return M;
 	}
-	bool done = false;
-	while(!done){
-		done = true;
+	//checks each subset to see if there is a bigger maxProfit
+	int temp;
+	int i=0;
+	while(i < pow(2, g.size())){
+		//creates the subset
+		cout << "New Subset: \n";
+		S.clear();
+		for(int j=0; j<g.size(); j++){
+			temp = i;
+			temp >>= j;
+			temp &=1;
+			if(temp ==1){
+				S.push_back(g.at(j));
+				g.at(j).printCard();
+			}
+		}
+		//checks if cost is greater than allowance
+		int sub_cost =0;
+		for(int y=0; y < S.size(); y++){
+			sub_cost += S.at(y).getPrice();
+			//cout << "added " << S.at(y).getPrice() << "\n";
+		}
+		//if able to purchase, check profit
+		if(sub_cost <= weight){
+			int subset_profit = 0;
+			for(int x = 0; x < S.size(); x++){
+				subset_profit += findMPrice(S.at(x).getName(), m) - S.at(x).getPrice();
+			}
+			//if profit is bigger than max, switch
+			if(subset_profit > maxProfit){
+				cout << "found bigger profit\n";
+				maxProfit = subset_profit;
+				*p = maxProfit;
+				M = S;
+			}
+		}
+		//cout << "End of Subset\n";
+		i++;
 	}
-
-	cout << sum << "\n";
-	cout << "finished\n";
 	return M;
 }
 
@@ -76,11 +111,10 @@ int main(){
 			Card m = Card(name,price);
 			//m.printCard();
 			market.push_back(m);
-			cout << "Card added to market!\n";
+		//	cout << "Card added to market!\n";
 		}
 		marketfile.close();
 	}
-	//cout << "The amount of cards in Market: " << market.size() << "\n";
 	//create_market("market_price.txt", market);
 	cout << "The amount of cards in Market: " << market.size() << "\n";
 	for(int i=0 ; i<market.size(); i++){
