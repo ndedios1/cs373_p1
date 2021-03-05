@@ -22,7 +22,7 @@ int findMPrice(string name, vector<Card> m){
 	return 0; 
 }	
 
-vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight){
+vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight, int* p){
 	int maxProfit = 0;
 	vector<Card> S;
 	vector<Card> M;
@@ -35,9 +35,13 @@ vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight){
 		for(int k =0; k < g.size(); k++){
 			iprofit += findMPrice(g.at(k).getName(), m) - g.at(k).getPrice();	
 		cout << "Gertrude's Price: " << g.at(k).getPrice() << "\n" ;
+		M.push_back(g.at(k));
 		}
-		iprofit += weight;
+		iprofit+= weight;
+		maxProfit = iprofit;
+		*p = maxProfit;
 		cout << "This is the total profit: " << iprofit << "\n";
+		return M;
 	}
 	cout << sum << "\n";
 	cout << "finished\n";
@@ -106,7 +110,10 @@ int main(){
 	}
 
 	gertrude.close();	
-	computeMaxProfit(gcards, market, allowance);
+	int mProfit=0;
+	computeMaxProfit(gcards, market, allowance, &mProfit);
+	cout << "mProfit: " << mProfit << "\n";
+
 	//writes to the output.txt file
 	ofstream output;
 	output1 = g_cards_num;
