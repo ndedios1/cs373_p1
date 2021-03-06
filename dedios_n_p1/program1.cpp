@@ -91,6 +91,10 @@ vector<Card> computeMaxProfit(vector<Card> g, vector<Card> m,  int weight, int* 
 }
 
 int main(int argc, char *argv[]){
+	if(argc !=5){
+		cout << "Insufficient number of arguments\n";
+		exit(0);
+	}
 	clock_t time_req;
 	int output1, output2, output3;
        	float output4;
@@ -130,7 +134,7 @@ int main(int argc, char *argv[]){
 	string g_text;
 	int big_index = -1;
 	vector<Card> gcards;
-	output << "Size of input\t" << "Max profit\t" << "Num of cards\t" << "Time (s)\n";
+	//output << "Size of input\t" << "Max profit\t" << "Num of cards\t" << "Time (s)\n";
 	while(!gertrude.eof()){
 		time_req = clock();
 		int g_cards_num = 0;

@@ -10,4 +10,4 @@ Card.o: Card.h Card.cpp
 	g++ -c Card.cpp -o Card.o
 
 clean: 
-	-rm program1.o program1
+	-rm *.o program1
